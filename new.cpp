@@ -2,71 +2,8 @@
 #include <SDL2/SDL_image.h>
 #include "stdio.h"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
-
-#define MAX_PLAYERS 5
-
-struct Player
-{
-    int x, y;
-    int id;
-    int texId;
-    
-    Player() {x = 0; y = 0; id = -1; texId = 0;}
-    Player(int cx, int cy, int ci, int ct)
-    {
-        x = cx;
-        y = cy;
-        id = ci;
-        texId = ct;
-    }
-    ~Player() { }
-
-    void moveUp() {y-=2;}
-    void moveDown() {y+=2;}
-    void moveLeft() {x-=2;}
-    void moveRight() {x+=2;}
-};
-
-struct Scene
-{
-    Player *players[MAX_PLAYERS];
-    int plNum;
-    int currId;
-
-    Scene() {plNum = 0; currId = 0;}
-    ~Scene()
-    {
-        for (int i = 0; i < plNum; i++)
-            delete players[i];
-    }
-    
-    void addPlayer(int x, int y, int tId)
-    {
-        players[plNum] = new Player(x, y, plNum, tId);
-        plNum++;
-    }
-    void delPlayer(int id)
-    {
-        delete players[id];
-        for (int i = id; i < (plNum-1); i++)
-            players[i] = players[i+1];
-        plNum--;
-    }
-
-    void select_player(int id) 
-    {
-        if (id < plNum)
-            currId = id;
-    }
-
-    void moveUp() {players[currId]->moveUp();}
-    void moveDown() {players[currId]->moveDown();}
-    void moveLeft() {players[currId]->moveLeft();}
-    void moveRight() {players[currId]->moveRight();}
-
-};
+#include "settings.h"
+#include "scene.h"
 
 struct Engine
 {
