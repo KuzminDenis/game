@@ -40,6 +40,7 @@ void Engine::init()
     createRenderer();
 
     plTextures[0] = IMG_LoadTexture(renderer, "pics/player0.png");
+
 }
 
 void Engine::addTexture(int x, int y, SDL_Texture *tex)

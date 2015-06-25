@@ -6,8 +6,13 @@ Player::Player(int cx, int cy, int ci, int ct)
     x = cx;
     y = cy;
     id = ci;
-    texId = ct;
+
+    if (ct < MAX_PLAYERS)
+        texId = ct;
+    else
+        texId = 0;
 }
+
 Player::~Player() { }
 
 void Player::moveUp() {y-=2;}
@@ -27,6 +32,7 @@ void Scene::addPlayer(int x, int y, int tId)
     players[plNum] = new Player(x, y, plNum, tId);
     plNum++;
 }
+
 void Scene::delPlayer(int id)
 {
     delete players[id];
@@ -41,7 +47,7 @@ void Scene::select_player(int id)
         currId = id;
 }
 
-void Scene::moveUp() {players[currId]->moveUp();}
-void Scene::moveDown() {players[currId]->moveDown();}
-void Scene::moveLeft() {players[currId]->moveLeft();}
+void Scene::moveUp()    {players[currId]->moveUp();}
+void Scene::moveDown()  {players[currId]->moveDown();}
+void Scene::moveLeft()  {players[currId]->moveLeft();}
 void Scene::moveRight() {players[currId]->moveRight();}
