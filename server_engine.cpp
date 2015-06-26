@@ -25,6 +25,9 @@ void ServerEngine::prepareListeningSocket()
     addr.sin_port = htons(port);
     addr.sin_addr.s_addr = INADDR_ANY;
 
+    int opt = 1;
+    setsockopt(ls, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+
     if (0 != bind(ls, (struct sockaddr *) &addr, sizeof(addr)))
         throw "bind()";
 
@@ -101,16 +104,30 @@ void ServerEngine::manageData(Scene *scene)
 
 void ServerEngine::mainLoop(Scene *scene)
 {
+    timeval tv;
+    tv.tv_sec = 1;
+    tv.tv_usec = 30000;
+
     while (true)
     {
         fillSet();
 
-        int res = select(max_descr+1, &readfds, NULL, NULL, NULL);
-        if (res < 1)
-            throw "select()";
+        int res = select(max_descr+1, &readfds, NULL, NULL, &tv);
+//        if (res < 1)
+//            throw "select()";
+
+        int fd;
+        for (int i = 0; i < descr_number; i++)
+        {
+            fd = descr_array[i];
+            write(fd, scene->getInfo(), strlen(scene->getInfo())+1);
+        }
+        
 
         manageConnection(scene);
         manageData(scene);
+
+        sleep(1);
     }
 }
 

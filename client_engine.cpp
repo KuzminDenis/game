@@ -33,10 +33,10 @@ void ClientEngine::fillSet()
     FD_SET(sockfd, &readfds);
 }
 
-void ClientEngine::refreshInfo()
+const char* ClientEngine::refreshInfo()
 {
     int rd;
-    char buff[BUFFER_SIZE];
+//    char buff[BUFFER_SIZE];
 
 
     fillSet();
@@ -45,16 +45,20 @@ void ClientEngine::refreshInfo()
     {
 //          throw "select()";
         printf("no msg\n");
-        return;
+        return "NULL";
     }
 
     if (FD_ISSET(sockfd, &readfds))
     {
-        rd = read(sockfd, buff, sizeof(buff)-1);
-        buff[rd] = '\0';
+//        rd = read(sockfd, buff, sizeof(buff)-1);
+//        buff[rd] = '\0';
 
-        printf("from server: %s\n", buff);
+          srvmsg = buff.get_string(sockfd);
+
+        printf("from server: %s\n", srvmsg);
+        return srvmsg;
     }
+    return "NULL\n";
 }
 
 void ClientEngine::sendMessage(const char* msg)

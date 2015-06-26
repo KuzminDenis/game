@@ -14,6 +14,7 @@
 
 #include "settings.h"
 #include "scene.h"
+#include "buffer.h"
 
 struct ClientEngine
 {
@@ -23,6 +24,12 @@ struct ClientEngine
     int port;
     int sockfd;
 
+//    char buff[BUFFER_SIZE];
+
+    Buffer buff;
+    char* srvmsg;
+
+
     timeval tv;
 
     ClientEngine();
@@ -30,7 +37,7 @@ struct ClientEngine
 
     void manageConnection(const char* ip);
     void fillSet();
-    void refreshInfo();
+    const char* refreshInfo();
     void sendMessage(const char* msg);
 };
 

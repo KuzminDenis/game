@@ -59,45 +59,65 @@ void Engine::drawScene(Scene *scene)
     for (int i = 0; i < scene->plNum; i++)
     {
         addTexture(scene->players[i]->x, 
-                   scene->players[i]->y, 
-                   plTextures[scene->players[i]->texId]);
+                   scene->players[i]->y, 0);
+                   //plTextures[scene->players[i]->texId]);
     }
 
     SDL_RenderPresent(renderer);
 }
 
-void Engine::manageEvent(SDL_Event event, Scene *scene)
+const char* Engine::manageEvent(SDL_Event event, Scene *scene)
 {
     switch (event.type)
     {
         case SDL_QUIT:
             done = true;
+            return "disconnect\n";
             break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym)
             {
                 case SDLK_UP:
                     scene->moveUp();
+                    return "up\n";
                     break;
                 case SDLK_DOWN:
                     scene->moveDown();
+                    return "down\n";
                     break;
                 case SDLK_RIGHT:
                     scene->moveRight();
+                    return "right\n";
                     break;
                 case SDLK_LEFT:
                     scene->moveLeft();
+                    return "left\n";
                     break;
                 case SDLK_0:
                     scene->select_player(0);
+                    return "0\n";
                     break;
                 case SDLK_1:
                     scene->select_player(1);
+                    return "1\n";
                     break;
             }
             break;
     }
+
+    return "NULL\n";
 }
+
+const char* Engine::processSDL(Scene *scene)
+{
+
+    SDL_Event event;
+    SDL_WaitEvent(&event);
+    const char *res = manageEvent(event, scene);
+    drawScene(scene);
+    return res;
+}
+
 
 void Engine::mainLoop(Scene *scene)
 {

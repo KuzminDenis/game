@@ -11,12 +11,12 @@ int main(int argc, char **argv)
         server.init();
 
         Scene scene;
-        scene.addPlayer(1,1,0);
+//        scene.addPlayer(1,1,0);
 
         printf("%s\n", scene.getInfo());
 
 
-        scene.addPlayer(100,100,0);
+//        scene.addPlayer(100,100,0);
 
         printf("%s\n", scene.getInfo());
 

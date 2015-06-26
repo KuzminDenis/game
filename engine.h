@@ -25,7 +25,8 @@ struct Engine
     void init();
     void addTexture(int x, int y, SDL_Texture *tex);
     void drawScene(Scene *scene);
-    void manageEvent(SDL_Event event, Scene *scene);
+    const char*  manageEvent(SDL_Event event, Scene *scene);
+    const char* processSDL(Scene *scene);
     void mainLoop(Scene *scene);
 };
 

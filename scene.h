@@ -37,6 +37,8 @@ struct Scene
     Scene();
     ~Scene();
 
+    void init();
+
     void addPlayer(int x, int y, int tId);
     void delPlayer(int id);
     void select_player(int id);
@@ -50,6 +52,8 @@ struct Scene
 
     void refreshInfo();
     char* getInfo();
+
+    void parseInfo(const char *msg);
 };
 
 #endif

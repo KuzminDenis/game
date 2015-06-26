@@ -32,13 +32,20 @@ char* Player::getInfo()
     refreshInfo();
     return info;
 }
-        
 
 Scene::Scene() {plNum = 0; currId = 0;}
 Scene::~Scene()
 {
     for (int i = 0; i < plNum; i++)
         delete players[i];
+}
+
+void Scene::init()
+{
+    for (int i = 0; i < plNum; i++)
+        delete players[i];
+    plNum = 0;
+    
 }
 
 void Scene::addPlayer(int x, int y, int tId)
@@ -83,7 +90,6 @@ void Scene::concatToInfo(char* src)
     info[i] = '\0';
 }
 
-
 void Scene::refreshInfo()
 {
     int n = sprintf(info, "%d ", plNum);
@@ -92,6 +98,8 @@ void Scene::refreshInfo()
 
     for (int i = 0; i < plNum; i++)
          concatToInfo(players[i]->getInfo());
+
+    concatToInfo("\n");
 }
 
 char* Scene::getInfo()
@@ -100,9 +108,46 @@ char* Scene::getInfo()
     return info;
 }
 
+void Scene::parseInfo(const char *msg)
+{
+
+    int num;
+    sscanf(msg, "%d", &num);
+    printf("plNum=%d\n", num);
+
+    int p0x,p0y,p0t,
+        p1x,p1y,p1t,
+        p2x,p2y,p2t;
 
 
+    if (num == 1)
+    {
+        sscanf(msg, "%d %d %d %d", &num, &p0x, &p0y, &p0t);
+        addPlayer(p0x,p0y,p0t);
+    }
+    else if (num == 2)
+    {
+        sscanf(msg, "%d %d %d %d %d %d %d", &num, &p0x,&p0y,&p0t,
+                                                    &p1x,&p1y,&p1t);
 
+        printf("%d %d %d %d %d %d\n", p0x,p0y,p0t,p1x,p1y,p1t);
+        addPlayer(p0x,p0y,p0t);
+        addPlayer(p1x,p1y,p1t);
+    }
+
+    else if (num == 3)
+    {
+        sscanf(msg, "%d %d %d %d %d %d %d %d %d %d", &num, 
+                    &p0x, &p0y, &p0t,
+                    &p1x, &p1y, &p1t,
+                    &p2x, &p2y, &p2t);
+
+        addPlayer(p0x,p0y,p0t);
+        addPlayer(p1x,p1y,p1t);
+        addPlayer(p2x,p2y,p2t);
+    }
+
+} 
 
 
 
