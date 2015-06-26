@@ -2,12 +2,16 @@
 #define _SCENE
 
 #include "settings.h"
+#include <string.h>
+#include <stdio.h>
 
 struct Player
 {
     int x, y;
     int id;
     int texId;
+
+    char info[BUFFER_SIZE];
 
     Player();
     Player(int cx, int cy, int ci, int ct);
@@ -17,6 +21,9 @@ struct Player
     void moveDown();
     void moveLeft();
     void moveRight();
+
+    void refreshInfo();
+    char* getInfo();
 };
 
 struct Scene
@@ -24,6 +31,8 @@ struct Scene
     Player *players[MAX_PLAYERS];
     int plNum;
     int currId;
+
+    char info[BUFFER_SIZE];
 
     Scene();
     ~Scene();
@@ -36,6 +45,11 @@ struct Scene
     void moveDown();
     void moveLeft();
     void moveRight();
+
+    void concatToInfo(char *src);
+
+    void refreshInfo();
+    char* getInfo();
 };
 
 #endif
