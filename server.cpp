@@ -20,7 +20,28 @@ int main(int argc, char **argv)
 
         printf("%s\n", scene.getInfo());
 
-        server.mainLoop(&scene);
+//        server.mainLoop(&scene);
+        while(true)
+        {
+            server.manageSelect();
+            server.sendInfoToClients(&scene);
+            server.manageNewConnections(&scene);
+            const char* cmd = server.manageRecievedData(&scene);
+            printf("recieved: %s\n", cmd);
+
+            if (!strcmp(cmd, "up"))
+                scene.moveUp();
+            else if (!strcmp(cmd, "down"))
+                scene.moveDown();
+            else if (!strcmp(cmd, "right"))
+                scene.moveRight();
+            else if (!strcmp(cmd, "left"))
+                scene.moveLeft();
+
+            usleep(100);
+        }
+
+
     }
     catch (const char* causer)
     {

@@ -58,9 +58,9 @@ void Engine::drawScene(Scene *scene)
     SDL_RenderClear(renderer);
     for (int i = 0; i < scene->plNum; i++)
     {
-        addTexture(scene->players[i]->x, 
-                   scene->players[i]->y, 0);
-                   //plTextures[scene->players[i]->texId]);
+        addTexture(scene->players[i].x, 
+                   scene->players[i].y,
+                   plTextures[scene->players[i].texId]);
     }
 
     SDL_RenderPresent(renderer);
@@ -78,27 +78,27 @@ const char* Engine::manageEvent(SDL_Event event, Scene *scene)
             switch (event.key.keysym.sym)
             {
                 case SDLK_UP:
-                    scene->moveUp();
+//                    scene->moveUp();
                     return "up\n";
                     break;
                 case SDLK_DOWN:
-                    scene->moveDown();
+//                    scene->moveDown();
                     return "down\n";
                     break;
                 case SDLK_RIGHT:
-                    scene->moveRight();
+//                    scene->moveRight();
                     return "right\n";
                     break;
                 case SDLK_LEFT:
-                    scene->moveLeft();
+//                    scene->moveLeft();
                     return "left\n";
                     break;
                 case SDLK_0:
-                    scene->select_player(0);
+//                    scene->select_player(0);
                     return "0\n";
                     break;
                 case SDLK_1:
-                    scene->select_player(1);
+//                    scene->select_player(1);
                     return "1\n";
                     break;
             }

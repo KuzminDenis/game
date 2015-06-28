@@ -28,7 +28,7 @@ struct Player
 
 struct Scene
 {
-    Player *players[MAX_PLAYERS];
+    Player players[MAX_PLAYERS];
     int plNum;
     int currId;
 

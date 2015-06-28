@@ -54,7 +54,7 @@ void ServerEngine::fillSet()
     }
 }
 
-void ServerEngine::manageConnection(Scene *scene)
+void ServerEngine::manageNewConnections(Scene *scene)
 {
     int fd;
     if (FD_ISSET(ls, &readfds)) // new connection request
@@ -83,22 +83,73 @@ void ServerEngine::manageConnection(Scene *scene)
     }
 }
 
-void ServerEngine::manageData(Scene *scene)
+const char* ServerEngine::manageRecievedData(Scene *scene)
 {
     int fd, rd;
-    char buff[BUFFER_SIZE];
+//    char buff[BUFFER_SIZE];
     for (int i = 0; i < descr_number; i++)
     {
         fd = descr_array[i];
         if (FD_ISSET(fd, &readfds)) // incoming data from client
         {
-            rd = read(fd, buff, sizeof(buff)-1);
-            buff[rd] = '\0';
+//            rd = read(fd, buff, sizeof(buff)-1);
+//            buff[rd] = '\0';
 
-            printf("income:%s\n", buff);
+             clmsg = buff.get_string(fd);
+//              printf("from client: %s\n", clmsg);
+              return clmsg;
 
-            write(fd, scene->getInfo(), strlen(scene->getInfo())+1);
+//            printf("income:%s\n", buff);
+            
+ //           write(fd, scene->getInfo(), strlen(scene->getInfo())+1);
         }
+    }
+    return "NULL\n";
+}
+
+void ServerEngine::processServer(Scene *scene)
+{
+    timeval tv;
+    tv.tv_sec = 1;
+    tv.tv_usec = 30000;
+
+    fillSet();
+
+    int res = select(max_descr+1, &readfds, NULL, NULL, &tv);
+//        if (res < 1)
+//            throw "select()";
+    printf("descrNum=%d\n",descr_number);
+    int fd;
+    for (int i = 0; i < descr_number; i++)
+    {
+        fd = descr_array[i];
+        write(fd, scene->getInfo(), strlen(scene->getInfo())+1);
+    }
+    
+    manageNewConnections(scene);
+    manageRecievedData(scene);
+}
+
+
+void ServerEngine::manageSelect()
+{ 
+    timeval tv;
+    tv.tv_sec = 1;
+    tv.tv_usec = 30000;
+
+    fillSet();
+    int res = select(max_descr+1, &readfds, NULL, NULL, &tv);
+//        if (res < 1)
+//            throw "select()";
+} 
+
+void ServerEngine::sendInfoToClients(Scene *scene)
+{
+    int fd;
+    for (int i = 0; i < descr_number; i++)
+    {
+        fd = descr_array[i];
+        write(fd, scene->getInfo(), strlen(scene->getInfo())+1);
     }
 }
 
@@ -115,7 +166,7 @@ void ServerEngine::mainLoop(Scene *scene)
         int res = select(max_descr+1, &readfds, NULL, NULL, &tv);
 //        if (res < 1)
 //            throw "select()";
-
+        printf("descrNum=%d\n",descr_number);
         int fd;
         for (int i = 0; i < descr_number; i++)
         {
@@ -124,10 +175,10 @@ void ServerEngine::mainLoop(Scene *scene)
         }
         
 
-        manageConnection(scene);
-        manageData(scene);
+        manageNewConnections(scene);
+        manageRecievedData(scene);
 
-        sleep(1);
+        usleep(100000);
     }
 }
 

@@ -68,10 +68,15 @@ char* Buffer::get_string(int sockfd)
     if (search_end())
     {
         tmp = cut_ending();
-        return tmp;
+//        if (tmp[0] == '@')
+            return tmp;
+//        else 
+//            return get_string(sockfd);
     }
 
     tmp = new char[1];
+//    tmp[0] = '@';
+//    tmp[1] = ' ';
     tmp[0] = '\0';
     tmp = add_string(tmp, buff);
     while (0 != (rd = read(sockfd, buff, BUFFER_SIZE - 1)))
@@ -86,7 +91,10 @@ char* Buffer::get_string(int sockfd)
             char* ending = cut_ending();
             tmp = add_string(tmp, ending);
             delete[] ending;
-            return tmp;
+//            if (tmp[0] == '@')
+                return tmp;
+//           else
+//                return get_string(sockfd);
         }
         buff[0] = '\0';
     }

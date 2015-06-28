@@ -27,10 +27,15 @@ int main(int argc, char **argv)
         while(!engine.done)
         {
             serv = client.refreshInfo();
-            if (strcmp(serv, "NULL"))
+            if (strcmp(serv, "NULL") && (serv[0] == '@'))
+            {
+                scene.init();
                 scene.parseInfo(serv);
+                printf("#PARSE#\n");
+            }
            const char* msg = engine.processSDL(&scene);
           printf("%s", msg); 
+          client.sendMessage(msg);
         }
     }
     catch (const char* causer)

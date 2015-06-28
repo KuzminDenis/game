@@ -14,6 +14,8 @@
 
 #include "settings.h"
 #include "scene.h"
+#include "buffer.h"
+
 
 struct ServerEngine
 {
@@ -28,15 +30,21 @@ struct ServerEngine
     int descr_number;
     int max_descr;
 
+    Buffer buff;
+    const char* clmsg;
+
     ServerEngine();
     ~ServerEngine();
 
     void init();
     void prepareListeningSocket();
     void fillSet();
-    void manageConnection(Scene *scene);
-    void manageData(Scene *scene);
+    void manageNewConnections(Scene *scene);
+    const char* manageRecievedData(Scene *scene);
+    void processServer(Scene *scene);
     void mainLoop(Scene *scene);
+    void sendInfoToClients(Scene *scene);
+    void manageSelect();
 };
 
 #endif

@@ -40,7 +40,7 @@ const char* ClientEngine::refreshInfo()
 
 
     fillSet();
-    int res = select(sockfd+1, &readfds, NULL, NULL, &tv);
+    int res = select(sockfd+1, &readfds, NULL, NULL, NULL);
     if (res < 1)
     {
 //          throw "select()";

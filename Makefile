@@ -11,8 +11,8 @@ main: main.cpp scene.o engine.o client_engine.o buffer.o
 server_engine: server_engine.cpp server_engine.h
 	g++ -g -Wall -c server_engine.cpp -o server_engine.o
 
-server: server.cpp server_engine.o scene.o
-	g++ -g -Wall server.cpp server_engine.o scene.o -o server
+server: server.cpp server_engine.o scene.o buffer.o
+	g++ -g -Wall server.cpp server_engine.o scene.o buffer.o -o server
 
 client_engine: client_engine.cpp client_engine.h
 	g++ -g -Wall -c client_engine.cpp -o client_engine.o
